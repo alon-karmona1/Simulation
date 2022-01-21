@@ -1,0 +1,119 @@
+---
+title: "התפלגות הגעה תספורת"
+author: "alon"
+date: "4 1 2020"
+output: html_document
+---
+```{r libraries, include=TRUE,echo=TRUE}
+library(fitdistrplus)
+library(magrittr)
+```
+
+uplode data
+
+```{r}
+x <- c(43,
+30,
+30,
+8,
+70,
+25,
+9,
+10,
+0,
+15,
+24,
+27,
+3,
+30,
+17,
+15,
+127,
+11,
+122,
+16,
+11,
+4,
+23,
+0,
+1,
+18,
+13,
+0,
+26,
+2,
+47,
+22,
+24,
+5,
+52,
+19,
+14,
+20,
+17,
+20,
+4,
+4,
+8,
+18,
+22,
+43,
+33,
+3,
+42
+)
+```
+
+# Fit dist
+
+```{r}
+poisFit <- fitdist(x,"pois")
+summary(poisFit)
+normFit <- fitdist(x,"norm")
+summary(normFit)
+expFit <- fitdist(x,"exp")
+summary(expFit)
+
+```
+we can see that the exp distribution is the best because the likelyhood is the higest,  and the "aic" and "bic" is the lowest.
+
+
+# plot view
+
+```{r}
+boxplot(x)
+newnormFit<- subset(x, x<150)
+print(newnormFit)
+newexpFit<- subset(x, x<60)
+print(newexpFit)
+newpoisFit<- subset(x, x<60)
+print(newpoisFit)
+
+```
+
+# new Fit dist - after removing the differents.
+
+```{r}
+normFit <- fitdist(newnormFit, "norm")
+summary(normFit)
+expFit <- fitdist(newexpFit,"exp")
+summary(expFit)
+poisFit <- fitdist(newpoisFit,"pois")
+summary(poisFit)
+
+```
+we can see that the exp distribution is the best because the likelyhood is the higest,  and the "aic" and "bic" is the lowest.
+
+
+# Goodness of fit
+
+
+```{r}
+gofstat(expFit)
+expFit <- gofstat(expFit)%>%print()
+expFit$kstest%>%print()
+mean (newexpFit)
+```
+
+
+
